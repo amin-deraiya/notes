@@ -8,6 +8,7 @@ import {
   NextSSRApolloClient,
   SSRMultipartLink,
 } from "@apollo/experimental-nextjs-app-support/ssr";
+import { useEffect } from 'react';
 
 // have a function to create a client for you
 function makeClient() {
@@ -43,6 +44,11 @@ function makeClient() {
 
 // you need to create a component to wrap your app in
 export function ApolloWrapper({ children }) {
+
+  useEffect(() => {
+    
+  }, [])
+
   return (
     <ApolloNextAppProvider makeClient={makeClient}>
       {children}

@@ -1,4 +1,6 @@
-const typeDefs = `#graphql
+const { gql } = require('apollo-server');
+
+const typeDefs = gql`
   type User {
     _id: ID!
     name: String!
@@ -32,17 +34,28 @@ const typeDefs = `#graphql
   }
 
   type LoginRes {
-    _id: ID!
-    name: String!
-    email: String!
-    status: String!
+    _id: ID
+    name: String
+    email: String
+    token: String
   }
+
+  type Token {
+    token: String
+    _id: ID
+    name: String
+    email: String
+    status: String
+    msg: String
+  }
+
+
 
   type Mutation {
     createUser(input: NewUserInput!): User
     updateUser(input: UpdateUserInput!): User
     deleteUser(id: ID!): String
-    login(email: String!, pin: Int!): LoginRes
+    login(email: String!, pin: Int!): Token!
   }
 `;
 

@@ -1,8 +1,13 @@
 import { ObjectId } from 'mongodb';
+import jwt from 'jsonwebtoken';
+import { cookies } from 'next/headers';
+const session = require('express-session');
+import SessionModel from './models/sessionModel';
+
 const resolvers = {
   Query: {
-    users: async (_: any, __: any, context: { dataSources: { users: { getAllUsers: () => any } } }) => {
-      console.log('inside users');
+    users: async (_: any, __: any, context: any) => {
+      const isSessionExpired = await context.dataSources.sessions.isSessionExpired()
 
       try {
         return await context.dataSources.users.getAllUsers();
@@ -43,34 +48,59 @@ const resolvers = {
         throw new Error('Failed to fetch user by Email');
       }
     },
-    
   },
 
   Mutation: {
     login: async (_: any, { email, pin }: any, context: any) => {
-      console.log(email, pin, "sdlfjasdlkfj");
-      
+
+      const cookieStore = cookies();
       try {
         const user = await context.dataSources.users.getUserByEmail(email);
-    
+
         if (!user) {
-          return "Invalid Input";
+          return 'Invalid Input';
         }
-    
+
         if (pin === user.pin) {
+          const jwtSecret: any = process.env.NEXT_PUBLIC_JWT_SECRET;
+          const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '1h' });
+          const userSession = await SessionModel.findOne({ sessionId: user?._id });
+          console.log(userSession, 'userSession @ login');
+
+          const newSessionID = user._id + Date.now()
+
+          const newSession = await SessionModel.create({
+            sessionId: newSessionID,
+            createdAt: new Date(),
+            expireAt: new Date(Date.now() + 3600000),
+            expired: false,
+            token,
+          });
+
+          cookieStore.set('session_id', newSessionID, {
+            httpOnly: true,
+            path: '/',
+            secure: true,
+            expires: new Date(Date.now() + 1 * 60 * 60 * 1000),
+          });
           return {
-            _id: user.id,
+            _id: user._id,
             name: user.name,
             email: user.email,
-            status: "success"
+            token,
+            status: 'success',
+            msg: 'Login Successful',
           };
         } else {
-          return "Incorrect Pin";
+          return {
+            status: 'error',
+            msg: 'Incorrect email or pin',
+          };
         }
       } catch (error) {
-        console.error("Error during login:", error);
+        console.error('Error during login:', error);
         // Handle other potential errors gracefully (e.g., database connection issues)
-        throw new Error("Login failed"); // Or a more specific error message
+        throw new Error('Login failed'); // Or a more specific error message
       }
     },
     createUser: async (

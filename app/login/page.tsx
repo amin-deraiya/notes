@@ -1,6 +1,7 @@
-"use client"
-import React, { useState } from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
+import { useRouter } from 'next/navigation';
 
 interface LoginInput {
   email: string;
@@ -13,20 +14,23 @@ const LOGIN_MUTATION = gql`
       _id
       name
       email
+      token
       status
+      msg
     }
   }
 `;
 
 const LoginPage = () => {
   const [formData, setFormData] = useState<LoginInput>({
-    email: '',
-    pin: 0,
+    email: 'amin@gmail.com',
+    pin: 123,
   });
-  
+  const router = useRouter();
+
   // const [login, { loading, error, data }] = useMutation(LOGIN_MUTATION);
   const [login, { error, data, loading }] = useMutation(LOGIN_MUTATION, {
-    variables: { email: formData.email, pin: Number(formData.pin) }
+    variables: { email: formData.email, pin: Number(formData.pin) },
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -35,22 +39,15 @@ const LoginPage = () => {
 
   const handleSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-  
-    // Call the login mutation with form data
-    await login();
-    // await login({ variables: { email: formData.email, pin: formData.pin } });
-  
-    // Handle successful or failed login (based on data, error, and loading states)
-    if (error) {
-      console.error(error, "errrrrorr");
-      // Handle errors appropriately (e.g., display error messages to the user)
-    } else if (data?.login.status === 'success') {
-      // Login successful, navigate or handle success
-      console.log('Login successful:', data.login);
-      // Handle successful login (e.g., navigate to a different page)
+
+    const { data } = await login();
+
+    if (data.login.status === 'error') {
+      alert(data?.msg);
+    } else if (data?.login?.status === 'success') {
+      router.push('/home', { scroll: false });
     } else {
       console.log('Login failed:', data?.login);
-      // Handle failed login (e.g., display an error message)
     }
   };
 
@@ -59,9 +56,7 @@ const LoginPage = () => {
       <div className="w-full max-w-md space-y-8">
         <div>
           <h2 className="text-center text-3xl font-extrabold text-gray-900">Login</h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Please enter your email and PIN to log in.
-          </p>
+          <p className="mt-2 text-center text-sm text-gray-600">Please enter your email and PIN to log in.</p>
         </div>
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">

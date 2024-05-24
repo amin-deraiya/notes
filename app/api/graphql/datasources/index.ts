@@ -1,8 +1,8 @@
-// MongoDB Data Source for Users
-import UserModel from '../models';
+import UserModel from '../models/usersModel';
 import { MongoDataSource } from 'apollo-datasource-mongodb';
 import { ObjectId } from 'mongodb';
-
+// const { UserModel } = require('../models/index');
+// "MongoDataSource constructor must be given a collection or Mongoose model"
 interface UserDocument {
   _id: ObjectId;
   name: string;
@@ -16,6 +16,7 @@ export default class Users extends MongoDataSource<UserDocument> {
     try {
       return await UserModel.find();
     } catch (error) {
+      console.log(error, 'errrrrrr');
       throw new Error('Failed to fetch users');
     }
   }
@@ -59,8 +60,8 @@ export default class Users extends MongoDataSource<UserDocument> {
   async login(_id: any) {
     try {
       const user = await this.getUserById(_id);
-      console.log(user, "userrrr")
-      return user
+      console.log(user, 'userrrr');
+      return user;
     } catch (error) {
       throw new Error('Failed to Login');
     }

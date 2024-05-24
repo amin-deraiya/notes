@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { gql, useQuery } from '@apollo/client';
-import client from '../lib/apolloClient';
+// import client from '../lib/apolloClient';
 
 const GET_USERS = gql`
   query {
@@ -15,11 +15,14 @@ const GET_USERS = gql`
 
 export const Home = () => {
   // const { loading, error, data } = useQuery(GET_USERS, { client });
-  const { loading, error, data } = useQuery(GET_USERS, { client });
+  const { loading, error, data } = useQuery(GET_USERS);
   console.log({ loading }, { error }, { data });
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (error) {
+    return <p>Error: {error.message}</p>;
+
+  }
 
   const users = data.users;
 
