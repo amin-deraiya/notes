@@ -5,7 +5,6 @@ import { cookies } from 'next/headers';
 const resolvers = {
   Query: {
     users: async (_: any, __: any, context: any) => {
-
       try {
         return await context.dataSources.users.getAllUsers();
       } catch (error) {
@@ -43,6 +42,13 @@ const resolvers = {
         return await context.dataSources.users.getUserByEmail(email);
       } catch (error) {
         throw new Error('Failed to fetch user by Email');
+      }
+    },
+    getAllNotes: async (_: any, __: any, context: { dataSources: { notes: { getAllNotes: () => any } } }) => {
+      try {
+        return await context.dataSources.notes.getAllNotes();
+      } catch (error: any) {
+        throw new Error('Failed to Retrive All Notes');
       }
     },
   },

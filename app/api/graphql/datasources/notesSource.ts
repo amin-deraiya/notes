@@ -20,4 +20,12 @@ export default class Notes extends MongoDataSource<NOTES> {
       throw new Error('Failed to create Note in datasource');
     }
   }
+
+  async getAllNotes() {
+    try {
+      return await notesModel.find();
+    } catch (error) {
+      throw new Error('Failed to retrieve Notes');
+    }
+  }
 }

@@ -51,6 +51,7 @@ const typeDefs = gql`
     user(id: ID!): User
     getUserByName(name: String!): User
     getUserByEmail(email: String!): User
+    getAllNotes: [Notes]
   }
 
   type LoginRes {
