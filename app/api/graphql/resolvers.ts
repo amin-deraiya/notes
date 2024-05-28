@@ -1,13 +1,10 @@
 import { ObjectId } from 'mongodb';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
-const session = require('express-session');
-import SessionModel from './models/sessionModel';
 
 const resolvers = {
   Query: {
     users: async (_: any, __: any, context: any) => {
-      const isSessionExpired = await context.dataSources.sessions.isSessionExpired()
 
       try {
         return await context.dataSources.users.getAllUsers();
@@ -52,7 +49,6 @@ const resolvers = {
 
   Mutation: {
     login: async (_: any, { email, pin }: any, context: any) => {
-
       const cookieStore = cookies();
       try {
         const user = await context.dataSources.users.getUserByEmail(email);
@@ -64,25 +60,6 @@ const resolvers = {
         if (pin === user.pin) {
           const jwtSecret: any = process.env.NEXT_PUBLIC_JWT_SECRET;
           const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '1h' });
-          const userSession = await SessionModel.findOne({ sessionId: user?._id });
-          console.log(userSession, 'userSession @ login');
-
-          const newSessionID = user._id + Date.now()
-
-          const newSession = await SessionModel.create({
-            sessionId: newSessionID,
-            createdAt: new Date(),
-            expireAt: new Date(Date.now() + 3600000),
-            expired: false,
-            token,
-          });
-
-          cookieStore.set('session_id', newSessionID, {
-            httpOnly: true,
-            path: '/',
-            secure: true,
-            expires: new Date(Date.now() + 1 * 60 * 60 * 1000),
-          });
           return {
             _id: user._id,
             name: user.name,
@@ -131,12 +108,38 @@ const resolvers = {
         throw new Error('Failed to update user');
       }
     },
-
     deleteUser: async (_: any, { id }: any, context: any) => {
       try {
         return await context.dataSources.users.deleteUser({ id });
       } catch (error) {
         throw new Error('Failed to delete user');
+      }
+    },
+
+    createNote: async (
+      _: any,
+      { _id, title, description, hidden, password }: any,
+      context: {
+        dataSources: {
+          notes: any;
+        };
+      }
+    ) => {
+      const payload = {
+        _id,
+        title,
+        description,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        password,
+        hidden,
+      };
+
+      try {
+        const newNote = await context.dataSources.notes.createNote(payload);
+        return newNote;
+      } catch (error) {
+        throw new Error('Failed to create Note');
       }
     },
   },
