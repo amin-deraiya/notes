@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { ApolloWrapper } from './ApolloWrapper';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
+import { GlobalProvider } from './context';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,9 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <UserProvider>
-        <body className={inter.className}>
-          <ApolloWrapper>{children}</ApolloWrapper>
-        </body>
+        <GlobalProvider>
+          <body className={inter.className}>
+            <ApolloWrapper>{children}</ApolloWrapper>
+          </body>
+        </GlobalProvider>
       </UserProvider>
     </html>
   );

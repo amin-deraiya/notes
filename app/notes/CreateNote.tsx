@@ -1,8 +1,10 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Note } from './page';
 import Button from '../components/Button';
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { GlobalContext } from '../context';
+import { GET_ALL_NOTES } from '../lib/queries';
 
 const NEW_NOTE_MUTATION = gql`
   mutation createNote(
@@ -19,6 +21,8 @@ const NEW_NOTE_MUTATION = gql`
 `;
 
 export default function CreateNote() {
+  const { setIsLoading } = useContext(GlobalContext);
+  const { refetch } = useQuery(GET_ALL_NOTES);
   const [newNote, setNewNote] = useState<Note>({
     description: '',
     _id: '',
@@ -39,8 +43,13 @@ export default function CreateNote() {
   });
 
   const handleAddNote = async () => {
+    setIsLoading(true);
+
     if (newNote?.title.trim() && newNote.description.trim()) {
       const { data } = await createNote();
+      refetch();
+      setIsLoading(false);
+
       setNewNote({
         description: '',
         _id: '',
