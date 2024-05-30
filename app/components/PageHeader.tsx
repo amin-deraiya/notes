@@ -16,14 +16,14 @@ const PageHeader: React.FC = () => {
         <div className="space-x-4" hidden={isLoading}>
           {user?.name ? (
             <a
-              href="/logout"
+              href="/api/auth/logout"
               className="bg-gray-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-gray-700"
             >
               Logout
             </a>
           ) : (
             <a
-              href="/login"
+              href="/api/auth/login"
               className="bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700"
             >
               Login
