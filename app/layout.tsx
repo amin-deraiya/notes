@@ -4,6 +4,7 @@ import './globals.css';
 import { ApolloWrapper } from './ApolloWrapper';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import { GlobalProvider } from './context';
+import PageHeader from './components/PageHeader';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
       <UserProvider>
         <GlobalProvider>
           <body className={inter.className}>
+            <PageHeader />
             <ApolloWrapper>{children}</ApolloWrapper>
           </body>
         </GlobalProvider>

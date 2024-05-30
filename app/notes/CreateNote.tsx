@@ -21,7 +21,7 @@ const NEW_NOTE_MUTATION = gql`
 `;
 
 export default function CreateNote() {
-  const { setIsLoading } = useContext(GlobalContext);
+  const { setIsLoading, modals, setModals } = useContext(GlobalContext);
   const { refetch } = useQuery(GET_ALL_NOTES);
   const [newNote, setNewNote] = useState<Note>({
     description: '',
@@ -35,9 +35,9 @@ export default function CreateNote() {
   const [createNote, { error, data, loading }] = useMutation(NEW_NOTE_MUTATION, {
     variables: {
       _id: crypto.randomUUID(),
-      title: newNote?.title,
-      description: newNote?.description,
-      hidden: newNote?.hidden,
+      title: newNote.title,
+      description: newNote.description,
+      hidden: newNote.hidden,
       password: '',
     },
   });
@@ -45,9 +45,9 @@ export default function CreateNote() {
   const handleAddNote = async () => {
     setIsLoading(true);
 
-    if (newNote?.title.trim() && newNote.description.trim()) {
-      const { data } = await createNote();
-      refetch();
+    if (newNote.title.trim() && newNote.description.trim()) {
+      await createNote();
+      await refetch();
       setIsLoading(false);
 
       setNewNote({
@@ -59,28 +59,35 @@ export default function CreateNote() {
         createdAt: '',
         updatedAt: '',
       });
+      setModals({
+        ...modals,
+        createNoteState: {
+          open: false,
+        },
+      });
     }
   };
 
   return (
-    <div className="w-[50%] bg-white shadow-md rounded-md p-4 flex flex-col space-y-4">
+    <div className="flex flex-col space-y-4">
       <h2 className="text-2xl font-semibold text-gray-800">Add Note</h2>
       <input
         type="text"
         placeholder="Note Title"
-        className="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black"
-        value={newNote?.title}
+        className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-black"
+        value={newNote.title}
         onChange={(e) => setNewNote({ ...newNote, title: e.target.value })}
       />
       <textarea
         placeholder="Note Description"
-        className="w-full h-40 px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black"
+        className="w-full h-40 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-black"
         value={newNote.description}
         onChange={(e) => setNewNote({ ...newNote, description: e.target.value })}
       />
-      <Button variant="primary" onClick={handleAddNote}>
-        Add Note
+      <Button variant="primary" onClick={handleAddNote} disabled={loading}>
+        {loading ? 'Adding...' : 'Add Note'}
       </Button>
+      {error && <p className="text-red-500">Error: {error.message}</p>}
     </div>
   );
 }

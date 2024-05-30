@@ -1,26 +1,27 @@
-// Button.tsx
+'use client';
 import React from 'react';
 
 interface ButtonProps {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'gray';
+  variant: 'primary' | 'secondary';
   onClick?: () => void;
+  disabled?: boolean;
   className?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ children, variant, onClick, className }) => {
-  const buttonClasses = `
-    text-sm font-medium px-4 py-2 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-    ${variant === 'primary' ? 'bg-indigo-600 hover:bg-indigo-700 text-white' : ''}
-    ${variant === 'secondary' ? 'bg-gray-400 hover:bg-gray-500 text-white' : ''}
-    ${variant === 'success' ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : ''}
-    ${variant === 'danger' ? 'bg-red-600 hover:bg-red-700 text-white' : ''}
-    ${variant === 'gray' || !variant ? 'bg-gray-200 hover:bg-gray-300 text-gray-700' : ''}
-    ${className || ''}
-  `;
+const Button: React.FC<ButtonProps> = ({ children, variant, onClick, disabled, className }) => {
+  const baseStyles = 'py-2 px-4 rounded-md shadow-sm focus:outline-none';
+  const primaryStyles = 'bg-indigo-600 text-white hover:bg-indigo-700';
+  const secondaryStyles = 'bg-gray-600 text-white hover:bg-gray-700';
 
   return (
-    <button type="button" className={buttonClasses} onClick={onClick}>
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`${baseStyles} ${variant === 'primary' ? primaryStyles : secondaryStyles} ${
+        className || ''
+      }`}
+    >
       {children}
     </button>
   );
