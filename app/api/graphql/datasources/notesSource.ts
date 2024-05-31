@@ -9,6 +9,7 @@ interface NOTES {
   updatedAt: string;
   password?: string;
   hidden: boolean;
+  userId: string;
 }
 
 export default class Notes extends MongoDataSource<NOTES> {

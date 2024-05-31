@@ -5,8 +5,7 @@ const typeDefs = gql`
     _id: ID!
     name: String!
     email: String!
-    password: String!
-    pin: Int
+    email_verified: Boolean
   }
 
   type Notes {
@@ -17,13 +16,13 @@ const typeDefs = gql`
     updatedAt: String!
     password: String
     hidden: Boolean!
+    userId: ID!
   }
 
   input NewUserInput {
-    name: String!
     email: String!
-    password: String!
-    pin: Int
+    name: String!
+    email_verified: Boolean
   }
 
   input NewNoteInput {
@@ -34,6 +33,7 @@ const typeDefs = gql`
     updatedAt: String!
     password: String
     hidden: Boolean!
+    userId: ID!
   }
 
   input UpdateUserInput {
@@ -71,7 +71,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createUser(input: NewUserInput!): User
+    createUser(email: String!, name: String!, email_verified: Boolean): User
     updateUser(input: UpdateUserInput!): User
     deleteUser(id: ID!): String
     login(email: String!, pin: Int!): Token!
@@ -83,6 +83,7 @@ const typeDefs = gql`
       password: String
       createdAt: String
       updatedAt: String
+      userId: ID!
     ): Notes
   }
 `;

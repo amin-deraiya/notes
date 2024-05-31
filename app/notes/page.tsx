@@ -10,6 +10,7 @@ import { GlobalContext } from '../context';
 
 export interface Note {
   _id: string;
+  userId: string;
   title: string;
   description: string;
   createdAt: string;

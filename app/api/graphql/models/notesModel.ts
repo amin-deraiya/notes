@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 
 const notesSchema = new Schema({
   _id: { type: String, required: [true] },
+  userId: { type: String, required: [true] },
   title: { type: String, required: [true, 'title required'] },
   description: { type: String, required: [true, 'description required'] },
   createdAt: { type: Date, required: [true, 'createdAt required'] },

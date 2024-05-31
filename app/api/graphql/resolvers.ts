@@ -88,21 +88,27 @@ const resolvers = {
     },
     createUser: async (
       _: any,
-      { input }: any,
+      { email, name, email_verified }: any,
       context: {
         dataSources: {
-          users: {
-            createUser: (input: any) => any;
-          };
+          users: any;
         };
       }
     ) => {
       try {
-        const newUser = await context.dataSources.users.createUser({
-          _id: new ObjectId(),
-          ...input,
-        });
-        return newUser;
+        const isUserAlreadyExist = await context.dataSources.users.getUserByEmail(email);
+        console.log(isUserAlreadyExist, 'isUserAlreadyExist');
+        if (isUserAlreadyExist?._id) {
+          return;
+        } else {
+          const newUser = await context.dataSources.users.createUser({
+            _id: new ObjectId(),
+            email,
+            email_verified,
+            name,
+          });
+          return newUser;
+        }
       } catch (error: any) {
         throw new Error('Failed to create user');
       }
@@ -124,7 +130,7 @@ const resolvers = {
 
     createNote: async (
       _: any,
-      { _id, title, description, hidden, password }: any,
+      { _id, userId, title, description, hidden, password }: any,
       context: {
         dataSources: {
           notes: any;
@@ -134,6 +140,7 @@ const resolvers = {
       const payload = {
         _id,
         title,
+        userId,
         description,
         createdAt: new Date(),
         updatedAt: new Date(),

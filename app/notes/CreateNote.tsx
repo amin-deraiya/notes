@@ -13,8 +13,9 @@ const NEW_NOTE_MUTATION = gql`
     $description: String!
     $hidden: Boolean
     $password: String
+    $userId: String
   ) {
-    createNote(_id: $_id, title: $title, description: $description, hidden: $hidden, password: $password) {
+    createNote(_id: $_id, userId: $userId, title: $title, description: $description, hidden: $hidden, password: $password) {
       _id
     }
   }
@@ -26,6 +27,7 @@ export default function CreateNote() {
   const [newNote, setNewNote] = useState<Note>({
     description: '',
     _id: '',
+    userId: '',
     title: '',
     hidden: false,
     password: '',
@@ -35,6 +37,7 @@ export default function CreateNote() {
   const [createNote, { error, data, loading }] = useMutation(NEW_NOTE_MUTATION, {
     variables: {
       _id: crypto.randomUUID(),
+      userId: '',
       title: newNote.title,
       description: newNote.description,
       hidden: newNote.hidden,
@@ -53,6 +56,7 @@ export default function CreateNote() {
       setNewNote({
         description: '',
         _id: '',
+        userId: '',
         title: '',
         hidden: false,
         password: '',

@@ -7,8 +7,7 @@ interface UserDocument {
   _id: ObjectId;
   name: string;
   email: string;
-  password: string;
-  pin: number;
+  email_verified: boolean;
 }
 
 export default class Users extends MongoDataSource<UserDocument> {
