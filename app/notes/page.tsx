@@ -3,10 +3,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import withAuth from '../components/hooks/withAuth';
 import { useQuery } from '@apollo/client';
 import CreateNote from './CreateNote';
-import Loader from '../components/Loader';
 import { GET_ALL_NOTES } from '../lib/queries';
 import Modal from '../Modals';
 import { GlobalContext } from '../context';
+import { decode } from '../lib/decodeText';
 
 export interface Note {
   _id: string;
@@ -24,7 +24,6 @@ const Notes: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const {
     loading,
-    error,
     data,
     refetch: getAllNotes,
   } = useQuery(GET_ALL_NOTES, {
@@ -32,7 +31,15 @@ const Notes: React.FC = () => {
     variables: { userId },
   });
 
-  const notes = data?.getAllNotes || [];
+  let notes = data?.getAllNotes ? JSON.parse(JSON.stringify(data?.getAllNotes)) : [];
+  notes = notes?.sort((a: any, b: any) => {
+    // Convert updatedAt strings to numbers (assuming timestamps)
+    const updatedAtA = parseInt(a.updatedAt, 10);
+    const updatedAtB = parseInt(b.updatedAt, 10);
+
+    // Descending order: latest update first
+    return updatedAtB - updatedAtA;
+  });
 
   useEffect(() => {
     if (userId) {
@@ -60,10 +67,10 @@ const Notes: React.FC = () => {
     });
   };
 
-  const filteredNotes = notes.filter(
+  const filteredNotes = notes?.filter(
     (note: Note) =>
-      note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      note.description.toLowerCase().includes(searchQuery.toLowerCase())
+      decode(note.title).toLowerCase().includes(searchQuery.toLowerCase()) ||
+      decode(note.description).toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -86,8 +93,8 @@ const Notes: React.FC = () => {
           <ul className="space-y-4">
             {filteredNotes.map((note: Note) => (
               <li key={note._id} className="bg-gray-50 shadow-sm rounded-md p-4">
-                <h3 className="text-xl font-semibold text-gray-800">{note.title}</h3>
-                <p className="text-gray-700 mt-2">{note.description}</p>
+                <h3 className="text-xl font-semibold text-gray-800">{decode(note.title)}</h3>
+                <p className="text-gray-700 mt-2">{decode(note.description)}</p>
               </li>
             ))}
           </ul>

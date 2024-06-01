@@ -6,6 +6,7 @@ export const GET_ALL_NOTES = gql`
       _id
       title
       description
+      updatedAt
     }
   }
 `;

@@ -9,7 +9,7 @@ const PageHeader: React.FC = () => {
     <header className="bg-white shadow-md p-4 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-xl font-semibold text-gray-800">
-          <Link href="/">Notes App</Link>
+          <Link href="/">AmiNotes</Link>
         </div>
         <div className="space-x-4" hidden={isLoading}>
           {user?.name ? (
