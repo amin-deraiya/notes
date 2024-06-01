@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { GlobalContext } from '../context';
 import { GET_ALL_NOTES } from '../lib/queries';
+import Loader from '../components/Loader';
 
 const NEW_NOTE_MUTATION = gql`
   mutation createNote(
@@ -44,22 +45,27 @@ export default function CreateNote() {
     createdAt: '',
     updatedAt: '',
   });
-  const [createNote, { error, data, loading }] = useMutation(NEW_NOTE_MUTATION, {
-    variables: {
-      _id: crypto.randomUUID(),
-      userId,
-      title: newNote.title,
-      description: newNote.description,
-      hidden: newNote.hidden,
-      password: '',
-    },
-  });
+  const [createNote, { error, data, loading }] = useMutation(NEW_NOTE_MUTATION);
 
   const handleAddNote = async () => {
     setIsLoading(true);
 
-    if (newNote.title.trim() && newNote.description.trim()) {
-      await createNote();
+    if (!userId) {
+      alert('UserId not found');
+      return;
+    }
+
+    if (newNote.title.trim() && newNote.description.trim() && userId) {
+      await createNote({
+        variables: {
+          _id: crypto.randomUUID(),
+          userId,
+          title: newNote.title,
+          description: newNote.description,
+          hidden: newNote.hidden,
+          password: '',
+        },
+      });
       await refetch({
         userId,
       });
@@ -86,6 +92,7 @@ export default function CreateNote() {
 
   return (
     <div className="flex flex-col space-y-4">
+      <Loader />
       <h2 className="text-2xl font-semibold text-gray-800">Add Note</h2>
       <input
         type="text"
