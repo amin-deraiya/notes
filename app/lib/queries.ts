@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_ALL_NOTES = gql`
-  query GetAllNotes {
-    getAllNotes {
+  query GetAllNotes($userId: String!) {
+    getAllNotes(userId: $userId) {
       _id
       title
       description

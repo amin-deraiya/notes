@@ -16,7 +16,7 @@ const typeDefs = gql`
     updatedAt: String!
     password: String
     hidden: Boolean!
-    userId: ID!
+    userId: String!
   }
 
   input NewUserInput {
@@ -33,7 +33,7 @@ const typeDefs = gql`
     updatedAt: String!
     password: String
     hidden: Boolean!
-    userId: ID!
+    userId: String!
   }
 
   input UpdateUserInput {
@@ -51,7 +51,7 @@ const typeDefs = gql`
     user(id: ID!): User
     getUserByName(name: String!): User
     getUserByEmail(email: String!): User
-    getAllNotes: [Notes]
+    getAllNotes(userId: String!): [Notes]
   }
 
   type LoginRes {
@@ -83,7 +83,7 @@ const typeDefs = gql`
       password: String
       createdAt: String
       updatedAt: String
-      userId: ID!
+      userId: String!
     ): Notes
   }
 `;

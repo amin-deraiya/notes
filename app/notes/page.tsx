@@ -1,5 +1,5 @@
 'use client';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import withAuth from '../components/hooks/withAuth';
 import { useQuery } from '@apollo/client';
 import CreateNote from './CreateNote';
@@ -20,13 +20,27 @@ export interface Note {
 }
 
 const Notes: React.FC = () => {
-  const { loading, error, data } = useQuery(GET_ALL_NOTES);
-  const notes = data?.getAllNotes || [];
-  // const [isModalOpen, setModalOpen] = useState(false);
-  const { modals, setModals } = useContext(GlobalContext);
-  console.log(modals, 'modals');
-
+  const { modals, setModals, userId } = useContext(GlobalContext);
   const [searchQuery, setSearchQuery] = useState('');
+  const {
+    loading,
+    error,
+    data,
+    refetch: getAllNotes,
+  } = useQuery(GET_ALL_NOTES, {
+    skip: !userId,
+    variables: { userId },
+  });
+
+  const notes = data?.getAllNotes || [];
+
+  useEffect(() => {
+    if (userId) {
+      getAllNotes({
+        userId,
+      });
+    }
+  }, [userId]);
 
   const handleOpenModal = () => {
     setModals({

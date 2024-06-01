@@ -5,40 +5,11 @@ import Button from './components/Button';
 import Modal from './Modals';
 import CreateNote from './notes/CreateNote';
 import { GlobalContext } from './context';
-import { useMutation, useQuery } from '@apollo/client';
-import { CREATE_USER, GET_USER_BY_EMAIL } from './lib/queries';
 import { useUser } from '@auth0/nextjs-auth0/client';
 
 const Home: React.FC = () => {
   const { modals, setModals } = useContext(GlobalContext);
   const { user, isLoading } = useUser();
-  const { refetch: getUserByEmail } = useQuery(GET_USER_BY_EMAIL, {
-    skip: true,
-  });
-  const [createUser] = useMutation(CREATE_USER);
-  const hasCreatedUserRef = useRef(false);
-
-  useEffect(() => {
-    const fetchAndCreateUser = async () => {
-      if (user?.email && !isLoading && !hasCreatedUserRef.current) {
-        const { data, loading } = await getUserByEmail({ email: user.email });
-
-        if (!loading && !data?.getUserByEmail) {
-          await createUser({
-            variables: {
-              email: user.email,
-              name: user.name,
-              email_verified: user.email_verified,
-            },
-          });
-          hasCreatedUserRef.current = true; // Mark user creation as initiated
-        }
-      }
-    };
-    setTimeout(() => {
-      fetchAndCreateUser();
-    }, 1000);
-  }, [user, isLoading, hasCreatedUserRef]);
 
   const handleOpenModal = () => {
     setModals({
@@ -66,17 +37,26 @@ const Home: React.FC = () => {
           A simple and secure way to keep track of your notes. You can create, view, and manage all your notes
           in one place.
         </p>
-        <div className="space-y-4">
-          <Link href="/notes">
-            <Button variant="primary" className="mx-1">
-              Go to Notes
-            </Button>
-          </Link>
+        {user?.email && !isLoading ? (
+          <div className="space-y-4">
+            <Link href="/notes">
+              <Button variant="primary" className="mx-1">
+                Go to Notes
+              </Button>
+            </Link>
 
-          <Button variant="primary" className="mx-1" onClick={handleOpenModal}>
-            Create a New Note
-          </Button>
-        </div>
+            <Button variant="primary" className="mx-1" onClick={handleOpenModal}>
+              Create a New Note
+            </Button>
+          </div>
+        ) : (
+          <a
+            href="/api/auth/login"
+            className="bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700"
+          >
+            Login
+          </a>
+        )}
       </div>
       <Modal isOpen={modals.createNoteState.open} onClose={handleCloseModal}>
         <CreateNote />

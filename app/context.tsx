@@ -13,6 +13,8 @@ export interface GlobalContextState {
       open: boolean;
     };
   };
+  userId: string;
+  setUserId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const GlobalContext = createContext<GlobalContextState>({
@@ -24,6 +26,8 @@ export const GlobalContext = createContext<GlobalContextState>({
       open: false,
     },
   },
+  userId: '',
+  setUserId: () => {},
 });
 
 export const GlobalProvider = ({ children }: { children: JSX.Element }) => {
@@ -33,9 +37,10 @@ export const GlobalProvider = ({ children }: { children: JSX.Element }) => {
       open: false,
     },
   });
+  const [userId, setUserId] = useState('');
 
   return (
-    <GlobalContext.Provider value={{ isLoading, setIsLoading, modals, setModals }}>
+    <GlobalContext.Provider value={{ isLoading, setIsLoading, modals, setModals, userId, setUserId }}>
       {children}
     </GlobalContext.Provider>
   );

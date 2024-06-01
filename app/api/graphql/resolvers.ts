@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
+import { getSession } from '@auth0/nextjs-auth0';
 
 const resolvers = {
   Query: {
@@ -44,9 +45,13 @@ const resolvers = {
         throw new Error('Failed to fetch user by Email');
       }
     },
-    getAllNotes: async (_: any, __: any, context: { dataSources: { notes: { getAllNotes: () => any } } }) => {
+    getAllNotes: async (
+      _: any,
+      { userId }: any,
+      context: { dataSources: { notes: { getAllNotes: (userId: string) => any } } }
+    ) => {
       try {
-        return await context.dataSources.notes.getAllNotes();
+        return await context.dataSources.notes.getAllNotes(userId);
       } catch (error: any) {
         throw new Error('Failed to Retrive All Notes');
       }

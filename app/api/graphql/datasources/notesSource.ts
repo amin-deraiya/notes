@@ -22,9 +22,9 @@ export default class Notes extends MongoDataSource<NOTES> {
     }
   }
 
-  async getAllNotes() {
+  async getAllNotes(userId: string) {
     try {
-      return await notesModel.find();
+      return await notesModel.find({ userId });
     } catch (error) {
       throw new Error('Failed to retrieve Notes');
     }

@@ -1,11 +1,9 @@
-'use client';
 import React from 'react';
 import Link from 'next/link';
 import { useUser } from '@auth0/nextjs-auth0/client';
 
 const PageHeader: React.FC = () => {
   const { user, isLoading } = useUser();
-  console.log(user, 'user');
 
   return (
     <header className="bg-white shadow-md p-4 sticky top-0 z-50">
