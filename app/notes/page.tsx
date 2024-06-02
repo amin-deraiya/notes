@@ -22,10 +22,21 @@ export interface Note {
 }
 
 const Notes: React.FC = () => {
+  /**
+   * @global states
+   */
   const { modals, setModals, userId, setIsLoading } = useContext(GlobalContext);
+
+  /**
+   * @states
+   */
   const [searchQuery, setSearchQuery] = useState('');
   const [editNote, setEditNote] = useState({});
   const [deleteNoteId, setDeleteNoteId] = useState('');
+
+  /**
+   * @queries and @mutations
+   */
   const {
     loading,
     data,
@@ -36,6 +47,9 @@ const Notes: React.FC = () => {
   });
   const [deleteNote] = useMutation(DELETE_NOTE_MUTATION);
 
+  /**
+   * @variables
+   */
   let notes = data?.getAllNotes ? JSON.parse(JSON.stringify(data?.getAllNotes)) : [];
   notes = notes?.sort((a: any, b: any) => {
     // Convert updatedAt strings to numbers (assuming timestamps)
@@ -46,6 +60,15 @@ const Notes: React.FC = () => {
     return updatedAtB - updatedAtA;
   });
 
+  const filteredNotes = notes?.filter(
+    (note: Note) =>
+      decode(note.title).toLowerCase().includes(searchQuery.toLowerCase()) ||
+      decode(note.description).toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  /**
+   * @functions
+   */
   useEffect(() => {
     refetchAllNotes();
   }, [userId]);
@@ -75,12 +98,6 @@ const Notes: React.FC = () => {
       },
     });
   };
-
-  const filteredNotes = notes?.filter(
-    (note: Note) =>
-      decode(note.title).toLowerCase().includes(searchQuery.toLowerCase()) ||
-      decode(note.description).toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   const handleDeleteNote = async () => {
     setIsLoading(true);

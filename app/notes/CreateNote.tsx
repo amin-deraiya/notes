@@ -9,11 +9,22 @@ import Loader from '../components/Loader';
 import { encode } from '../lib/decodeText';
 
 export default function CreateNote() {
+  /**
+   * @global states
+   */
   const { setIsLoading, modals, setModals, userId } = useContext(GlobalContext);
 
+  /**
+   * @queries and @mutations
+   */
   const { refetch } = useQuery(GET_ALL_NOTES, {
     skip: true,
   });
+  const [createNote, { error, data, loading }] = useMutation(NEW_NOTE_MUTATION);
+
+  /**
+   * @states
+   */
   const [newNote, setNewNote] = useState<Note>({
     description: '',
     _id: '',
@@ -24,8 +35,10 @@ export default function CreateNote() {
     createdAt: '',
     updatedAt: '',
   });
-  const [createNote, { error, data, loading }] = useMutation(NEW_NOTE_MUTATION);
 
+  /**
+   * @functions
+   */
   const handleAddNote = async () => {
     setIsLoading(true);
 

@@ -23,19 +23,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <UserProvider>
-          <GlobalProvider>
-            <body className={inter.className}>
-              <link rel="icon" href="/public/favicon.ico" sizes="any" />
-              <ApolloWrapper>
-                <RootWrapper>{children}</RootWrapper>
-              </ApolloWrapper>
-            </body>
-          </GlobalProvider>
-        </UserProvider>
-      </>
+      <link rel="icon" href="/favicon.ico" sizes="any" />
+      <UserProvider>
+        <GlobalProvider>
+          <body className={inter.className}>
+            <link rel="icon" href="/public/favicon.ico" sizes="any" />
+            <ApolloWrapper>
+              <RootWrapper>{children}</RootWrapper>
+            </ApolloWrapper>
+          </body>
+        </GlobalProvider>
+      </UserProvider>
     </html>
   );
 }

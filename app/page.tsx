@@ -1,5 +1,5 @@
 'use client';
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext } from 'react';
 import Link from 'next/link';
 import Button from './components/Button';
 import Modal from './Modals';

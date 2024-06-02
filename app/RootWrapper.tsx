@@ -12,20 +12,34 @@ export default function RootWrapper({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { user, isLoading } = useUser();
+  /**
+   * @global states
+   */
   const { setUserId, setIsLoading } = useContext(GlobalContext);
+
+  /**
+   * @states
+   */
+  const { user, isLoading } = useUser();
+
+  /**
+   * @queries and @mutations
+   */
   const { refetch: getUserByEmail, loading } = useQuery(GET_USER_BY_EMAIL, {
     skip: true,
   });
   const [createUser] = useMutation(CREATE_USER);
 
+  /**
+   * @functions
+   */
   useEffect(() => {
     setIsLoading(isLoading || loading);
   }, [isLoading, loading]);
 
   useEffect(() => {
     const fetchAndCreateUser = async () => {
-      setIsLoading(true)
+      setIsLoading(true);
       if (user?.email && !isLoading) {
         const { data, loading } = await getUserByEmail({ email: user.email });
         setUserId(data?.getUserByEmail?._id);
@@ -39,10 +53,10 @@ export default function RootWrapper({
               email_verified: user.email_verified,
             },
           });
-          setIsLoading(false)
+          setIsLoading(false);
         }
       } else {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     };
     fetchAndCreateUser();
