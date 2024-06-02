@@ -160,6 +160,39 @@ const resolvers = {
         throw new Error('Failed to create Note');
       }
     },
+    updateNote: async (
+      _: any,
+      { _id, title, description, hidden, password }: any,
+      context: {
+        dataSources: {
+          notes: any;
+        };
+      }
+    ) => {
+      const payload = {
+        _id,
+        title,
+        description,
+        updatedAt: new Date(),
+        password,
+        hidden: hidden || false,
+      };
+
+      try {
+        const newNote = await context.dataSources.notes.updateNote(payload);
+        return newNote;
+      } catch (error) {
+        throw new Error('Failed to create Note');
+      }
+    },
+    deleteNote: async (_: any, { _id }: any, context: any) => {
+      try {
+        const dlt = await context.dataSources.notes.deleteNote({ _id });
+        return dlt
+      } catch (error) {        
+        throw new Error('Failed to delete user');
+      }
+    },
   },
 };
 

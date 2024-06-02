@@ -2,33 +2,11 @@
 import React, { useContext, useState } from 'react';
 import { Note } from './page';
 import Button from '../components/Button';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { GlobalContext } from '../context';
-import { GET_ALL_NOTES } from '../lib/queries';
+import { GET_ALL_NOTES, NEW_NOTE_MUTATION } from '../lib/queries';
 import Loader from '../components/Loader';
 import { encode } from '../lib/decodeText';
-
-const NEW_NOTE_MUTATION = gql`
-  mutation createNote(
-    $_id: String!
-    $title: String!
-    $description: String!
-    $hidden: Boolean
-    $password: String
-    $userId: String!
-  ) {
-    createNote(
-      _id: $_id
-      userId: $userId
-      title: $title
-      description: $description
-      hidden: $hidden
-      password: $password
-    ) {
-      _id
-    }
-  }
-`;
 
 export default function CreateNote() {
   const { setIsLoading, modals, setModals, userId } = useContext(GlobalContext);

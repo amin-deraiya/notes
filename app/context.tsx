@@ -12,6 +12,12 @@ export interface GlobalContextState {
     createNoteState: {
       open: boolean;
     };
+    editNoteState: {
+      open: boolean;
+    };
+    alertState: {
+      open: boolean;
+    };
   };
   userId: string;
   setUserId: React.Dispatch<React.SetStateAction<string>>;
@@ -25,6 +31,12 @@ export const GlobalContext = createContext<GlobalContextState>({
     createNoteState: {
       open: false,
     },
+    editNoteState: {
+      open: false,
+    },
+    alertState: {
+      open: false,
+    },
   },
   userId: '',
   setUserId: () => {},
@@ -34,6 +46,12 @@ export const GlobalProvider = ({ children }: { children: JSX.Element }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [modals, setModals] = useState({
     createNoteState: {
+      open: false,
+    },
+    editNoteState: {
+      open: false,
+    },
+    alertState: {
       open: false,
     },
   });

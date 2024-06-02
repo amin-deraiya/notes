@@ -70,6 +70,11 @@ const typeDefs = gql`
     msg: String
   }
 
+  type DeleteNoteResponse {
+    acknowledged: Boolean
+    deletedCount: String
+  }
+
   type Mutation {
     createUser(email: String!, name: String!, email_verified: Boolean): User
     updateUser(input: UpdateUserInput!): User
@@ -85,6 +90,17 @@ const typeDefs = gql`
       updatedAt: String
       userId: String!
     ): Notes
+    updateNote(
+      _id: String!
+      title: String!
+      description: String!
+      hidden: Boolean!
+      password: String!
+      createdAt: String
+      updatedAt: String
+      userId: String
+    ): Notes
+    deleteNote(_id: String!): DeleteNoteResponse
   }
 `;
 

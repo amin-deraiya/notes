@@ -1,4 +1,4 @@
-export const encode = (text: string | number) => {
+export const encode = (text: string) => {
   try {
     return btoa(encodeURIComponent(text));
   } catch (error) {
