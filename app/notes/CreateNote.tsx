@@ -91,6 +91,7 @@ export default function CreateNote() {
         placeholder="Note Title"
         className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-black"
         value={newNote.title}
+        autoFocus
         onChange={(e) => setNewNote({ ...newNote, title: e.target.value })}
       />
       <textarea

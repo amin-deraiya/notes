@@ -65,13 +65,14 @@ export default function EditNote({ note }: any) {
   return (
     <div className="flex flex-col space-y-4">
       <Loader />
-      <h2 className="text-2xl font-semibold text-gray-800">Edit Note = {editNote._id}</h2>
+      <h2 className="text-2xl font-semibold text-gray-800">Edit Note</h2>
 
       <input
         type="text"
         placeholder="Note Title"
         className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-black"
         value={decode(editNote.title)}
+        autoFocus
         onChange={(e) => setEditNote({ ...editNote, title: encode(e.target.value) })}
       />
       <textarea
