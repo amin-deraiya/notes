@@ -1,6 +1,6 @@
 export const encode = (text: string) => {
   try {
-    return btoa(encodeURIComponent(text));
+    return btoa(text?.trim()?.toString());
   } catch (error) {
     return text;
   }
@@ -8,7 +8,7 @@ export const encode = (text: string) => {
 
 export const decode = (text: string) => {
   try {
-    return atob(decodeURIComponent(text));
+    return atob(text?.trim()?.toString());
   } catch (error) {
     return text;
   }
