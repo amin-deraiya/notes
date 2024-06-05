@@ -33,6 +33,7 @@ const Notes: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [editNote, setEditNote] = useState({});
   const [deleteNoteId, setDeleteNoteId] = useState('');
+  const [privateNotePassword, setPrivateNotePassword] = useState('');
 
   /**
    * @queries and @mutations
@@ -196,6 +197,30 @@ const Notes: React.FC = () => {
               onClick={handleDeleteNote}
             >
               Delete
+            </button>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        title="Unlock Private Notes"
+        isOpen={modals.privateNote.open}
+        onClose={() => handleCloseModal('privateNote')}
+      >
+        <div className="mt-4">
+          <input
+            type="text"
+            placeholder="Password"
+            className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-black"
+            value={privateNotePassword}
+            autoFocus
+            onChange={(e) => setPrivateNotePassword(e.target.value)}
+          />
+          <div className="mt-4 flex justify-end space-x-4">
+            <button
+              className="bg-gray-300 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-400"
+              onClick={() => handleCloseModal('privateNote')}
+            >
+              Close
             </button>
           </div>
         </div>

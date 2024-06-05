@@ -81,6 +81,16 @@ export default function EditNote({ note }: any) {
         value={decode(editNote.description)}
         onChange={(e) => setEditNote({ ...editNote, description: encode(e.target.value) })}
       />
+      {/* <div className="flex items-center space-x-2">
+        <input
+          type="checkbox"
+          id="privateNote"
+          className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+          checked={newNote.hidden}
+          onChange={(e) => setNewNote({ ...newNote, hidden: e.target.checked })}
+        />
+        <label htmlFor="privateNote" className="text-gray-700">Private Note</label>
+      </div> */}
       <Button variant="primary" onClick={handleEditNote} disabled={loading}>
         {loading ? 'Updating...' : 'Edit Note'}
       </Button>
