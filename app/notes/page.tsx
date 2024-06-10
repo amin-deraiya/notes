@@ -9,6 +9,8 @@ import { GlobalContext } from '../context';
 import { decode } from '../lib/decodeText';
 import EditNote from './EditNote';
 import Button from '../components/Button';
+import { MdOutlineDelete } from "react-icons/md";
+import { MdAdd } from "react-icons/md";
 
 export interface Note {
   _id: string;
@@ -146,14 +148,14 @@ const Notes: React.FC = () => {
                   </div>
                   <div>
                     <Button
-                      variant="secondary"
+                      variant="outlined-danger"
                       onClick={(e: any) => {
                         e.stopPropagation();
                         setDeleteNoteId(note._id);
                         handleOpenModal('alertState');
                       }}
                     >
-                      Delete
+                      <MdOutlineDelete  size={24} color='red' />
                     </Button>
                   </div>
                 </div>
@@ -167,7 +169,7 @@ const Notes: React.FC = () => {
         className="fixed bottom-6 right-6 bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700"
         onClick={() => handleOpenModal('createNoteState')}
       >
-        +
+        <MdAdd size={22} />
       </button>
 
       <Modal isOpen={modals.createNoteState.open} onClose={() => handleCloseModal('createNoteState')}>
