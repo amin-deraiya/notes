@@ -6,7 +6,6 @@ import { useMutation, useQuery } from '@apollo/client';
 import { GlobalContext } from '../context';
 import { EDIT_NOTE_MUTATION, GET_ALL_NOTES } from '../lib/queries';
 import Loader from '../components/Loader';
-import { decode, encode } from '../lib/decodeText';
 
 export default function EditNote({ note }: any) {
   /**
@@ -71,15 +70,15 @@ export default function EditNote({ note }: any) {
         type="text"
         placeholder="Note Title"
         className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-black"
-        value={decode(editNote.title)}
+        value={editNote.title}
         autoFocus
-        onChange={(e) => setEditNote({ ...editNote, title: encode(e.target.value) })}
+        onChange={(e) => setEditNote({ ...editNote, title: e.target.value })}
       />
       <textarea
         placeholder="Note Description"
         className="w-full h-40 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-black"
-        value={decode(editNote.description)}
-        onChange={(e) => setEditNote({ ...editNote, description: encode(e.target.value) })}
+        value={editNote.description}
+        onChange={(e) => setEditNote({ ...editNote, description: e.target.value })}
       />
       {/* <div className="flex items-center space-x-2">
         <input

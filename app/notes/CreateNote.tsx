@@ -6,7 +6,6 @@ import { useMutation, useQuery } from '@apollo/client';
 import { GlobalContext } from '../context';
 import { GET_ALL_NOTES, NEW_NOTE_MUTATION } from '../lib/queries';
 import Loader from '../components/Loader';
-import { encode } from '../lib/decodeText';
 
 export default function CreateNote() {
   /**
@@ -52,8 +51,8 @@ export default function CreateNote() {
         variables: {
           _id: crypto.randomUUID(),
           userId,
-          title: encode(newNote.title),
-          description: encode(newNote.description),
+          title: newNote.title,
+          description: newNote.description,
           hidden: newNote.hidden,
           password: '',
         },

@@ -6,11 +6,10 @@ import CreateNote from './CreateNote';
 import { DELETE_NOTE_MUTATION, GET_ALL_NOTES } from '../lib/queries';
 import Modal from '../Modals';
 import { GlobalContext } from '../context';
-import { decode } from '../lib/decodeText';
 import EditNote from './EditNote';
 import Button from '../components/Button';
-import { MdOutlineDelete } from "react-icons/md";
-import { MdAdd } from "react-icons/md";
+import { MdOutlineDelete } from 'react-icons/md';
+import { MdAdd } from 'react-icons/md';
 
 export interface Note {
   _id: string;
@@ -65,8 +64,8 @@ const Notes: React.FC = () => {
 
   const filteredNotes = notes?.filter(
     (note: Note) =>
-      decode(note.title).toLowerCase().includes(searchQuery.toLowerCase()) ||
-      decode(note.description).toLowerCase().includes(searchQuery.toLowerCase())
+      note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      note.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   /**
@@ -143,8 +142,8 @@ const Notes: React.FC = () => {
               >
                 <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-800">{decode(note.title)}</h3>
-                    <p className="text-gray-700 mt-2">{decode(note.description)}</p>
+                    <h3 className="text-xl font-semibold text-gray-800">{note.title}</h3>
+                    <p className="text-gray-700 mt-2">{note.description}</p>
                   </div>
                   <div>
                     <Button
@@ -155,7 +154,7 @@ const Notes: React.FC = () => {
                         handleOpenModal('alertState');
                       }}
                     >
-                      <MdOutlineDelete  size={24} color='red' />
+                      <MdOutlineDelete size={24} color="red" />
                     </Button>
                   </div>
                 </div>

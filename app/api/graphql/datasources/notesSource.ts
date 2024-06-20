@@ -1,5 +1,6 @@
 import { MongoDataSource } from 'apollo-datasource-mongodb';
 import notesModel from '../models/notesModel';
+import { encode } from '@/app/lib/decodeText';
 
 interface NOTES {
   _id: string;
@@ -15,8 +16,13 @@ interface NOTES {
 export default class Notes extends MongoDataSource<NOTES> {
   async createNote(input: any) {
     try {
-      const newUser = await notesModel.create(input);
-      return newUser;
+      const clonedNote = { ...input };
+
+      clonedNote.title = encode(clonedNote?.title);
+      clonedNote.description = encode(clonedNote.description);
+
+      const newNote = await notesModel.create(clonedNote);
+      return newNote;
     } catch (error) {
       throw new Error('Failed to create Note in datasource');
     }
@@ -25,6 +31,10 @@ export default class Notes extends MongoDataSource<NOTES> {
   async updateNote(input: any) {
     try {
       const filter = { _id: input._id };
+
+      input.title = encode(input.title);
+      input.description = encode(input.description);
+
       let doc = await notesModel.findOneAndUpdate(filter, input);
 
       return doc;
@@ -44,7 +54,8 @@ export default class Notes extends MongoDataSource<NOTES> {
 
   async getAllNotes(userId: string) {
     try {
-      return await notesModel.find({ userId });
+      let allNotes = await notesModel.find({ userId });
+      return allNotes;
     } catch (error) {
       throw new Error('Failed to retrieve Notes');
     }

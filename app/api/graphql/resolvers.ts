@@ -1,7 +1,6 @@
 import { ObjectId } from 'mongodb';
 import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
-import { getSession } from '@auth0/nextjs-auth0';
+import { decode } from '@/app/lib/decodeText';
 
 const resolvers = {
   Query: {
@@ -51,16 +50,24 @@ const resolvers = {
       context: { dataSources: { notes: { getAllNotes: (userId: string) => any } } }
     ) => {
       try {
-        return await context.dataSources.notes.getAllNotes(userId);
+        const notes = await context.dataSources.notes.getAllNotes(userId);
+        notes.forEach((item: any) => {
+          try {
+            item.title = decode(item?.title || '');
+            item.description = decode(item?.description || '');
+          } catch (error) {
+            console.error(`Error decoding item ${item.id}:`);
+          }
+        });
+        return notes;
       } catch (error: any) {
-        throw new Error('Failed to Retrive All Notes');
+        throw new Error('Failed to Retrive All Notes', error);
       }
     },
   },
 
   Mutation: {
     login: async (_: any, { email, pin }: any, context: any) => {
-      const cookieStore = cookies();
       try {
         const user = await context.dataSources.users.getUserByEmail(email);
 
@@ -102,7 +109,6 @@ const resolvers = {
     ) => {
       try {
         const isUserAlreadyExist = await context.dataSources.users.getUserByEmail(email);
-        console.log(isUserAlreadyExist, 'isUserAlreadyExist');
         if (isUserAlreadyExist?._id) {
           return;
         } else {
@@ -189,7 +195,7 @@ const resolvers = {
       try {
         const dlt = await context.dataSources.notes.deleteNote({ _id });
         return dlt
-      } catch (error) {        
+      } catch (error) {
         throw new Error('Failed to delete user');
       }
     },
