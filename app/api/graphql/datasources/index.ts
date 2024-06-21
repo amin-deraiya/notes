@@ -59,7 +59,6 @@ export default class Users extends MongoDataSource<UserDocument> {
   async login(_id: any) {
     try {
       const user = await this.getUserById(_id);
-      console.log(user, 'userrrr');
       return user;
     } catch (error) {
       throw new Error('Failed to Login');
