@@ -12,7 +12,7 @@ import UserModel from './models/usersModel';
 import notesModel from './models/notesModel';
 import Notes from './datasources/notesSource';
 
-const uri = process.env.NEXT_PUBLIC_MONGODB_URI;
+const uri = process.env.MONGODB_URI;
 const app = express();
 const httpServer = http.createServer(app);
 

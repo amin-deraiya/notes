@@ -92,13 +92,13 @@ export default function CreateNote() {
         className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-black"
         value={newNote.title}
         autoFocus
-        onChange={(e) => setNewNote({ ...newNote, title: e.target.value.replace(titleRegex, "") })}
+        onChange={(e) => setNewNote({ ...newNote, title: e.target.value })}
       />
       <textarea
         placeholder="Note Description"
         className="w-full h-40 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-black"
         value={newNote.description}
-        onChange={(e) => setNewNote({ ...newNote, description: e.target.value.replace(descriptionRegex, "") })}
+        onChange={(e) => setNewNote({ ...newNote, description: e.target.value })}
       />
       <div className="flex items-center space-x-2">
         <input

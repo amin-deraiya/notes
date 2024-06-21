@@ -49,13 +49,20 @@ yarn install
 
 1. **Auth0 Configuration**: Set up your Auth0 credentials in `.env.local` file:
 ```bash
-AUTH0_DOMAIN=your-auth0-domain
+AUTH0_SECRET=your-auth0-secret-key
+AUTH0_BASE_URL=http://localhost:3000
+AUTH0_ISSUER_BASE_URL=your-auth0-issuer-base-url
 AUTH0_CLIENT_ID=your-auth0-client-id
 AUTH0_CLIENT_SECRET=your-auth0-client-secret
-AUTH0_REDIRECT_URI=http://localhost:3000/api/auth/callback
+SECRET_KEY=your-auth0-secret-key
 ```
 
-2. **MongoDB Configuration**:
+2. **.env Configuration**:
+```bash
+NEXT_PUBLIC_DOMAIN=http://localhost:3000/
+```
+
+3. **MongoDB Configuration**:
 ```bash
 MONGODB_URI=your-mongodb-uri
 ```
@@ -75,7 +82,7 @@ Contributions are welcome! To contribute:
 
 1. Fork the repository
 2. Create your feature branch (git checkout -b feature/YourFeature)
-3. Commit your changes (git commit -am 'Add some feature')
+3. Commit your changes (git commit -m 'Add some feature')
 4. Push to the branch (git push origin feature/YourFeature)
 5. Open a pull request
    
