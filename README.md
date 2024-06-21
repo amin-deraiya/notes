@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js Notes App
+
+A notes application built with Next.js, GraphQL, Node.js, MongoDB, and Auth0 for authentication. The app focuses on providing a secure and scalable platform for storing encrypted notes while also serving as a learning project for enhancing skills in Next.js, GraphQL, Node.js, MongoDB, encryption, and security.
+
+## Features
+
+- **Authentication**: User authentication and authorization using Auth0.
+- **Note Management**: Create, read, update, and delete encrypted notes.
+- **GraphQL API**: Backend API powered by GraphQL for efficient data fetching.
+- **Data Storage**: MongoDB used as the database to store notes.
+- **Security**: Notes content stored encrypted for enhanced security.
+
+## Purpose
+
+The purpose of this application is twofold:
+1. **Learning**: Gain deep knowledge and hands-on experience with Next.js, GraphQL, Node.js, MongoDB, encryption techniques, and security best practices.
+2. **Community Contribution**: Provide a platform for the community to contribute, improve the application's features, and enhance the codebase structure.
+
+## Tech Stack
+
+- **Frontend**: Next.js
+- **Backend**: Node.js with GraphQL
+- **Database**: MongoDB
+- **Authentication**: Auth0
+- **CSS Framework**: Tailwind CSS
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js
+- npm or yarn
+- MongoDB instance
+- Auth0 account
+
+### Installation
+
+Clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/amin-deraiya/notes.git
+cd notes
+npm install
+# or
+yarn install
+```
+
+## Configuration
+
+1. **Auth0 Configuration**: Set up your Auth0 credentials in `.env.local` file:
+```bash
+AUTH0_DOMAIN=your-auth0-domain
+AUTH0_CLIENT_ID=your-auth0-client-id
+AUTH0_CLIENT_SECRET=your-auth0-client-secret
+AUTH0_REDIRECT_URI=http://localhost:3000/api/auth/callback
+```
+
+2. **MongoDB Configuration**:
+```bash
+MONGODB_URI=your-mongodb-uri
+```
+
+## Running Locally
+To start the development server:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
+The app will be accessible at http://localhost:3000
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contributing
+Contributions are welcome! To contribute:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Fork the repository
+2. Create your feature branch (git checkout -b feature/YourFeature)
+3. Commit your changes (git commit -am 'Add some feature')
+4. Push to the branch (git push origin feature/YourFeature)
+5. Open a pull request
+   
+Please ensure your code follows the project's coding standards.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
