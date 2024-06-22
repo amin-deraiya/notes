@@ -7,48 +7,14 @@ import { GlobalProvider } from './context';
 import RootWrapper from './RootWrapper';
 
 const inter = Inter({ subsets: ['latin'] });
-const APP_DEFAULT_TITLE = "Notes PWA";
-const APP_NAME = "Notes App";
-const APP_TITLE_TEMPLATE = "%s - Notes App";
-const APP_DESCRIPTION = "Secure Notes App";
 
 export const metadata: Metadata = {
-  title: {
-    default: APP_DEFAULT_TITLE,
-    template: APP_TITLE_TEMPLATE,
-  },
-  description: APP_DESCRIPTION,
+  title: 'Notes',
+  description: 'secure notes app',
   icons: {
     icon: '/public/favicon.ico',
   },
-  manifest: "/public/manifest.json",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-    title: APP_DEFAULT_TITLE,
-    // startUpImage: [],
-  },
-  formatDetection: {
-    telephone: false,
-  },
-  openGraph: {
-    type: "website",
-    siteName: APP_NAME,
-    title: {
-      default: APP_DEFAULT_TITLE,
-      template: APP_TITLE_TEMPLATE,
-    },
-    description: APP_DESCRIPTION,
-  },
-  twitter: {
-    card: "summary",
-    title: {
-      default: APP_DEFAULT_TITLE,
-      template: APP_TITLE_TEMPLATE,
-    },
-    description: APP_DESCRIPTION,
-  },
-};
+}
 
 export default function RootLayout({
   children,
