@@ -6,6 +6,7 @@ import Modal from './Modals';
 import CreateNote from './notes/CreateNote';
 import { GlobalContext } from './context';
 import { useUser } from '@auth0/nextjs-auth0/client';
+import { HEADER_HEIGHT } from './common/static';
 
 const Home: React.FC = () => {
   const { modals, setModals } = useContext(GlobalContext);
@@ -30,7 +31,7 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-6">
+    <div className="bg-gray-100 flex flex-col items-center justify-center p-6" style={{ minHeight: `calc(100vh - ${HEADER_HEIGHT}px)` }}>
       <div className="max-w-2xl w-full bg-white shadow-md rounded-lg p-6 text-center">
         <h1 className="text-4xl font-bold text-gray-800 mb-6">Welcome to the Notes App</h1>
         <p className="text-gray-700 mb-6">
