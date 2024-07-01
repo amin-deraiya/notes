@@ -10,6 +10,7 @@ import EditNote from './EditNote';
 import Button from '../components/Button';
 import { MdOutlineDelete } from 'react-icons/md';
 import { MdAdd } from 'react-icons/md';
+import { HEADER_HEIGHT } from '../common/static';
 
 export interface Note {
   _id: string;
@@ -114,7 +115,7 @@ const Notes: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-100 flex flex-col p-6 relative">
+    <div className="bg-gray-100 flex flex-col p-6 relative" style={{ minHeight: `calc(100vh - ${HEADER_HEIGHT}px)` }}>
       <div className="bg-white shadow-md rounded-lg p-6 mb-6">
         <input
           type="text"
