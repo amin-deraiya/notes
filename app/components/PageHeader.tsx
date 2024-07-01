@@ -4,13 +4,14 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 import Button from './Button';
 import { MdLockOutline } from 'react-icons/md';
 import { GlobalContext } from '../context';
+import { HEADER_HEIGHT } from '../common/static';
 
 const PageHeader: React.FC = () => {
   const { user, isLoading } = useUser();
   const { setModals, modals } = useContext(GlobalContext);
 
   return (
-    <header className="bg-white shadow-md p-4 sticky top-0 z-50">
+    <header className="bg-white shadow-md p-4 sticky top-0 z-50" style={{ maxHeight: HEADER_HEIGHT }}>
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-xl font-semibold text-gray-800">
           <Link href="/">AmiNotes</Link>
